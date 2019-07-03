@@ -22,8 +22,7 @@ const enrollMFA = async () => {
             },
             body: JSON.stringify({
                 authenticator_types: ['oob'],
-                oob_channels: ['sms', 'email'],
-                phone_number: '+919814068029',
+                oob_channels: ['email'],
             }),
         });
         const data = await response.json();
@@ -41,7 +40,6 @@ const challengeMFA = async () => {
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({
                 mfa_token,
-                challenge_type: 'oob',
                 client_id: 'XXH9skh44KSude1nhCGM74R9TciHylrj',
             }),
         });
@@ -70,13 +68,6 @@ const fetchPrivateApi = async (credentials) => {
 
 const authenticateMFA = async (binding_code) => {
     try {
-        const body = {
-            grant_type: 'http://auth0.com/oauth/grant-type/mfa-oob',
-            client_id: 'XXH9skh44KSude1nhCGM74R9TciHylrj',
-            mfa_token,
-            oob_code,
-            binding_code,
-        };
         const payload = new FormData();
         payload.append('grant_type', 'http://auth0.com/oauth/grant-type/mfa-oob');
         payload.append('client_id', 'XXH9skh44KSude1nhCGM74R9TciHylrj');
@@ -87,7 +78,6 @@ const authenticateMFA = async (binding_code) => {
             method: 'POST',
             headers: {
                 'content-type': 'application/x-www-form-urlencoded',
-                Authorization: `Bearer ${mfa_token}`,
             },
             body: payload,
         });

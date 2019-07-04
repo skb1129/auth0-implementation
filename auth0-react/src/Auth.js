@@ -68,18 +68,17 @@ const fetchPrivateApi = async (credentials) => {
 
 const authenticateMFA = async (binding_code) => {
     try {
-        const payload = new FormData();
-        payload.append('grant_type', 'http://auth0.com/oauth/grant-type/mfa-oob');
-        payload.append('client_id', 'XXH9skh44KSude1nhCGM74R9TciHylrj');
-        payload.append('mfa_token', mfa_token);
-        payload.append('oob_code', oob_code);
-        payload.append('binding_code', binding_code);
+        const body = {
+            grant_type: 'http://auth0.com/oauth/grant-type/mfa-oob',
+            client_id: 'XXH9skh44KSude1nhCGM74R9TciHylrj',
+            mfa_token, oob_code, binding_code,
+        };
         const response = await fetch('https://dev-4bulwykj.auth0.com/oauth/token', {
             method: 'POST',
             headers: {
-                'content-type': 'application/x-www-form-urlencoded',
+                'content-type': 'application/json',
             },
-            body: payload,
+            body: JSON.stringify(body),
         });
         const data = await response.json();
         console.log(data);
